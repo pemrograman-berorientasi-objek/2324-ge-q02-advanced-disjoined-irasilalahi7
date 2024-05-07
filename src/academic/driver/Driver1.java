@@ -312,6 +312,7 @@ public class Driver1 {
                 System.out.println(selectedStudent.getId() + "|" + selectedStudent.getName() + "|" +
                         selectedStudent.getYear() + "|" + selectedStudent.getMajor() + "|" +
                         String.format("%.2f", gpa) + "|" + getTotalCredits(studentEnrollments, courses));
+
             } else {
                 for (Lecturer lecturer : lecturers) {
                     System.out.println(lecturer.getId() + "|" + lecturer.getName() + "|" + lecturer.getInitial() + "|" + lecturer.getEmail() + "|" + lecturer.getStudyProgram());
@@ -322,8 +323,6 @@ public class Driver1 {
                 for (Student student : students) {
                     System.out.println(student.getId() + "|" + student.getName() + "|" + student.getYear() + "|" + student.getMajor());
                 }
-
-
                 // Bagian yang mengatur pencetakan output
                 for (Course course : courses) {
                     for (Enrollment enrollment : enrollments) {
@@ -340,7 +339,48 @@ public class Driver1 {
                         }
                     }
 
+                } if (command.equals("find-the-best-student")) {
+                String year= data[1];
+                String semester=data[2];
+
+                
+                double maxGPA = 0;
+                String bestStudentId = "";
+                String bestGradeA = "";
+                String bestGradeB = "";
+                for (Student student : students) {
+                    ArrayList<Enrollment> studentEnrollments = new ArrayList<>();
+                    for (Enrollment enrollment : enrollments) {
+                        if (enrollment.getStudentId().equals(student.getId()) &&
+                                enrollment.getAcademicYear().equals(year) ) {
+                            studentEnrollments.add(enrollment);
+                        }
+                    }
+
+                    double gpa = calculateGPA(studentEnrollments, courses);
+                    if (gpa > maxGPA) {
+                        maxGPA = gpa;
+                        bestStudentId = student.getId();
+                        for (Enrollment e : enrollments) {
+                            if (e.getStudentId().equals(bestStudentId) && e.getAcademicYear().equals(year)) {
+                                bestGradeA = e.getGrade();
+                            }
+                            if (e.getStudentId().equals(bestStudentId) && e.getSemester().equals(semester)  && e.getAcademicYear().equals(year)) {
+                                bestGradeB = e.getGrade();
+                            }
+                            
+                        }
+                    }
                 }
+             
+               //cetak best-student
+                System.out.println(bestStudentId + "|" + bestGradeB + "/" +bestGradeA);
+              
+             
+            } 
+
+         
+                
                 break;
             }
         }
