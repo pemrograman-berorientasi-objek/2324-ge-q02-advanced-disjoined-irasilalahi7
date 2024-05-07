@@ -5,8 +5,6 @@ package academic.model;
  * @author 12S22048 - ira silalahi
  */
 
-
-
 public class Enrollment {
     private String studentId;
     private String courseId;
